@@ -1,11 +1,13 @@
 # dmrid-contactlist-converter
-Python scripts for DMR radio contactlists
+Python3 scripts for DMR radio contactlists
 
 Should get latest dmr-id contacts from radioid.net, Ukraine only
-Then convert contacts to .csv radio specific format  
+Then convert contacts to .csv radio specific format
 
-Current radio:
+Some users has ciryllic in names, but most of radios can't show it correctly
+So, this script just transliterate ciryllic  
 
+Current radio:  
 **Anytone 878 UV II plus**
 
 # Requirements  
@@ -13,6 +15,7 @@ Current radio:
 1. Install Python3  
 2. Install requests library  
 `pip install requests`  
+`pip install transliterate`  
 
 # How to use  
 
