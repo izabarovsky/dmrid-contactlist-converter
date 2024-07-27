@@ -1,15 +1,14 @@
-import requests
 import csv
-import logging
 import re
 import os.path
+from radioid import getDmrIds
 from transliterate import translit, get_available_language_codes
 from datetime import datetime
 
 K2_CALLSIGNS_FILE = 'k2_call_signs.csv'
 
-# Uncomment if logger required
-# requests.packages.urllib3.add_stderr_logger()
+# Get ids for ukraine, add more countries if required
+DMR_COUNTRIES_FILTER = ['ukraine']
 
 # Check if string contains ciryllic symbols
 def hasCiryllic(string):
@@ -47,25 +46,16 @@ def findK2CallSign(contact):
         print("DMR_ID %s has k2CallSign %s" % (dmrid, k2CallSign))
         return k2CallSign
 
-
-# radioid url 
-url = "https://radioid.net/api/dmr/user/"
-# hardcoded filter, change it if need
-query_params = {'country': 'ukraine'}
 # headers
 headers = ["No.", "TG/DMR ID", "Call Alert", "Name", "City", "Call Type", "Callsign", "State/Prov", "Country", "Remarks"]
 
-response = requests.get(url, params=query_params)
-response_json = response.json()
-
-print("Total:", response_json["count"])
-
 file_name = datetime.now().strftime("%Y%m%d-%H%M%S-") + "anytone-contacts" + ".csv"
 
-contacts = response_json["results"]
 csv_file = open(file_name, 'w')
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(headers)
+
+contacts = getDmrIds(DMR_COUNTRIES_FILTER)
 
 count = 1
 for contact in contacts:
