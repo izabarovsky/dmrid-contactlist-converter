@@ -2,8 +2,11 @@ import requests
 import csv
 import logging
 import re
+import os.path
 from transliterate import translit, get_available_language_codes
 from datetime import datetime
+
+K2_CALLSIGNS_FILE = 'k2_call_signs.csv'
 
 # Uncomment if logger required
 # requests.packages.urllib3.add_stderr_logger()
@@ -20,6 +23,30 @@ def parseName(contact):
         name = translit(name, "uk", reversed=True)
         print("Transliterated as [%s]" % name)
     return name
+
+# Get k2 callsigns as dictionary
+def getK2Callsigns():
+    if os.path.isfile(K2_CALLSIGNS_FILE):
+        with open(K2_CALLSIGNS_FILE, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            callsigns = list(filter(lambda row: row["DMR_ID"] != "null", list(reader)))
+            dictionary = {row["DMR_ID"] : row["K2CallSign"] for row in callsigns}
+            return dictionary
+    else:
+        print("%s not found, skip" % K2_CALLSIGNS_FILE)
+
+k2 = getK2Callsigns()
+
+def findK2CallSign(contact):
+    if k2 is None:
+        return None
+    dmrid = str(contact["id"])
+    k2CallSign = k2.get(dmrid)
+    if k2CallSign is not None:
+        k2CallSign = translit(k2CallSign, "uk", reversed=True) if hasCiryllic(k2CallSign) else k2CallSign
+        print("DMR_ID %s has k2CallSign %s" % (dmrid, k2CallSign))
+        return k2CallSign
+
 
 # radioid url 
 url = "https://radioid.net/api/dmr/user/"
@@ -38,15 +65,26 @@ file_name = datetime.now().strftime("%Y%m%d-%H%M%S-") + "anytone-contacts" + ".c
 contacts = response_json["results"]
 csv_file = open(file_name, 'w')
 csv_writer = csv.writer(csv_file)
-
 csv_writer.writerow(headers)
+
 count = 1
 for contact in contacts:
-    row = [count, contact["id"], "None", parseName(contact), contact["city"], "", contact["callsign"], contact["state"], contact["country"], ""]
+    k2CallSign = findK2CallSign(contact)
+    name = parseName(contact) if k2CallSign is None else "K2-"+k2CallSign
+
+    row = [
+        count,
+        contact["id"],
+        "None",
+        name,
+        contact["city"],
+        "",
+        contact["callsign"],
+        contact["state"],
+        contact["country"],
+        ""]
     csv_writer.writerow(row)
     count += 1
 csv_file.close()
 
 print("Saved to file: ", file_name)
-
-
