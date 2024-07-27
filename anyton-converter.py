@@ -70,7 +70,7 @@ csv_writer.writerow(headers)
 count = 1
 for contact in contacts:
     k2CallSign = findK2CallSign(contact)
-    name = parseName(contact) if k2CallSign is None else "K2-"+k2CallSign
+    name = parseName(contact) if k2CallSign is None else "K2-" + k2CallSign
 
     row = [
         count,
