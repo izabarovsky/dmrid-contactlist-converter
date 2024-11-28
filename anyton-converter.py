@@ -8,7 +8,8 @@ from transliterate import transliterate
 K2_CALLSIGNS_FILE = 'k2_call_signs.csv'
 
 # Get ids for ukraine, add more countries if required
-DMR_COUNTRIES_FILTER = ['%'] # 'ukraine'
+# DMR_COUNTRIES_FILTER = ['%'] # 'ukraine'
+DMR_COUNTRIES_FILTER = ['ukraine'] 
 
 # Check if string contains ciryllic symbols
 def hasCiryllic(string):

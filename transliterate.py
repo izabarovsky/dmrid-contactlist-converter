@@ -1,5 +1,6 @@
 cyrillic = {
     u'\u0401': u'YO',
+    u'\u0406': u'I',
     u'\u0410': u'a',
     u'\u0411': u'B',
     u'\u0412': u'V',
@@ -65,6 +66,7 @@ cyrillic = {
     u'\u044e': u'yu',
     u'\u044f': u'ya',
     u'\u0451': u'yo',
+    u'\u0456': u'i',
 }
 
         
