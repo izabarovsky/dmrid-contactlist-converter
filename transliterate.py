@@ -1,3 +1,5 @@
+import re
+
 cyrillic = {
     u'\u0401': u'YO',
     u'\u0406': u'I',
@@ -75,6 +77,10 @@ def from_cyrillic(char):
         return cyrillic[char]
     else:
         return char
+
+# Check if text contains ciryllic symbols
+def hasCiryllic(text):
+    return bool(re.search('[а-яА-Я]', text))
     
-def transliterate(txt):
-    return ''.join([from_cyrillic(val) for val in txt])
+def transliterate(text):
+    return ''.join([from_cyrillic(val) for val in text])

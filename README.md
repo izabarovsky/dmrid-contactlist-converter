@@ -10,24 +10,43 @@ So, this script just transliterate ciryllic
 Current radio tested:  
 **Anytone 878 UV II plus**
 
+## How to use for Anytone
+
+Just run script  
+`python3 anytone-converter.py`  
+
+Contact list will be saved to file with current timestamp  
+ `YYYYMMDD-hhmmss-anytone-contacts.csv`
+
+## How to use for Motorola & Hytera
+
+1. Generate simple contacts:  
+`python3 simple-converter.py`
+
+2. Export contacts from mototrbo or hytera cps, usually is .xlx format
+
+3. Copy contacts from list, generated in step 1, into .xlx exported 
+
+4. Import .xlx into radio
+
+Just run script  
+`python3 anytone-converter.py`  
+
+Contact list will be saved to file with current timestamp  
+ `YYYYMMDD-hhmmss-anytone-contacts.csv`  
+
 ## Countries filter
 
-If necessary, open script `anyton-converter.py` and put required countries in variable `DMR_COUNTRIES_FILTER`  
+If necessary, open script `xxx-converter.py` and put required countries in variable `DMR_COUNTRIES_FILTER`  
 If you wish all of them, put wildcard `%`  
 
 ## Requirements  
 
 1. Install Python3  
 2. Install requests library  
-`pip install requests`  
-
-## How to use  
-
-Just run script 
-`python3 anytone-converter.py`  
-
-Contact list will be saved to file with current timestamp
- `YYYYMMDD-hhmmss-anytone-contacts.csv`  
+`pip3 install requests`
+3. Install dataclass_wizard library  
+`pip3 install dataclass_wizard`
 
 ## K2 aliases
 
