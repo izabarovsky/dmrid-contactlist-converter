@@ -48,7 +48,7 @@ def resolveCyrillic(contacts):
             if hasCiryllic(value):
                 trasliteratedText = transliterate(value)
                 print("%s has %s=%s, transliterated to %s" % (contact.callsign, key, value, trasliteratedText))
-                value = trasliteratedText
+                setattr(contact, key, trasliteratedText)
     return contacts
 
 def cuttingAliases(contacts):
