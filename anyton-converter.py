@@ -8,8 +8,8 @@ from transliterate import transliterate
 K2_CALLSIGNS_FILE = 'k2_call_signs.csv'
 
 # Get ids for ukraine, add more countries if required
-# DMR_COUNTRIES_FILTER = ['ukraine']
-DMR_COUNTRIES_FILTER = ['%'] 
+DMR_COUNTRIES_FILTER = ['ukraine']
+# DMR_COUNTRIES_FILTER = [] 
 
 # Check if string contains ciryllic symbols
 def hasCiryllic(string):
@@ -19,9 +19,9 @@ def hasCiryllic(string):
 def parseName(contact):
     name = contact.fname.strip() + ' ' + contact.surname.strip()
     if hasCiryllic(name):
-        print("Callsign %s has ciryllic in name: [%s]" % (contact.callsign, name))
+        print(f'Callsign {contact.callsign} has ciryllic in name: [{name}]')
         name = transliterate(name)
-        print("Transliterated as [%s]" % name)
+        print(f'Transliterated as [{name}]')
     return name
 
 # Get k2 callsigns as dictionary
@@ -68,4 +68,4 @@ for contact in contacts:
     count += 1
 csv_file.close()
 
-print("Saved to file: ", file_name)
+print(f'{count} contacts saved to file {file_name}', )
