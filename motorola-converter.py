@@ -1,6 +1,7 @@
 import csv
 import os.path
 import re
+from DmrIdModel import DmrIdModel
 from radioid import getDmrIds, getDmrIdItems
 from datetime import datetime
 from transliterate import transliterate, hasCiryllic
@@ -16,7 +17,7 @@ ALIAS_MAX_SIZE = 16
 # Result filename
 file_name = datetime.now().strftime("%Y%m%d-%H%M%S-") + "simple-contacts.csv"
 # Additional filter by regexp, comment to disable
-FILTER_BY_PATTERN = r"^..[0-8]E.*"
+# FILTER_BY_PATTERN = r"^..[0-8]E.*"
 
 # SETTINGS SECTION END
 

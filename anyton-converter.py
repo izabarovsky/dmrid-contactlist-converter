@@ -1,7 +1,7 @@
 import csv
 import re
 import os.path
-from radioid import getDmrIds
+from radioid import getDmrIdItems
 from datetime import datetime
 from transliterate import transliterate
 
@@ -17,9 +17,9 @@ def hasCiryllic(string):
 
 # Concatenate firstName+surName, transliterate if has ciryllic symbols
 def parseName(contact):
-    name = contact["fname"].strip() + ' ' + contact["surname"].strip()
+    name = contact.fname.strip() + ' ' + contact.surname.strip()
     if hasCiryllic(name):
-        print("Callsign %s has ciryllic in name: [%s]" % (contact["callsign"], name))
+        print("Callsign %s has ciryllic in name: [%s]" % (contact.callsign, name))
         name = transliterate(name)
         print("Transliterated as [%s]" % name)
     return name
@@ -56,25 +56,15 @@ csv_file = open(file_name, 'w', newline='', encoding='utf-8')
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(headers)
 
-contacts = getDmrIds(DMR_COUNTRIES_FILTER)
+contacts = getDmrIdItems(DMR_COUNTRIES_FILTER)
 
 count = 1
+
 for contact in contacts:
     k2CallSign = findK2CallSign(contact)
     name = parseName(contact) if k2CallSign is None else "K2-" + k2CallSign
-
-    row = [
-        count,
-        contact["id"],
-        "None",
-        name,
-        contact["city"],
-        "",
-        contact["callsign"],
-        contact["state"],
-        contact["country"],
-        ""]
-    csv_writer.writerow(row)
+    record = [count, contact.id, "None", name, contact.city, "", contact.callsign, contact.state, contact.country, "" ]
+    csv_writer.writerow(record)
     count += 1
 csv_file.close()
 

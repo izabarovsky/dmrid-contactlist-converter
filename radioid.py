@@ -1,6 +1,6 @@
 import requests
 import json
-from dataclasses import dataclass
+from DmrIdModel import DmrIdModel
 from dataclass_wizard import fromlist
 
 # Uncomment if logger required
@@ -26,14 +26,3 @@ def getDmrIdItems(countries: list[str]):
     print("IDs, founded in radioid:", response_json["count"])
     return fromlist(DmrIdModel, response_json["results"])
 
-@dataclass
-class DmrIdModel:
-    callsign: str
-    city: str
-    country: str
-    fname: str
-    city: str
-    id: int
-    remarks: str
-    state: str
-    surname: str
