@@ -1,5 +1,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
+# Python virtual env
+venv
+
 # DMR contact-lists
 *.csv

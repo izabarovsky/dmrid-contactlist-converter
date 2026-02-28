@@ -1,7 +1,7 @@
 import csv
 import re
 import os.path
-from radioid import getDmrIds
+from radioid import getDmrIdItems
 from datetime import datetime
 from transliterate import transliterate
 
@@ -9,7 +9,7 @@ K2_CALLSIGNS_FILE = 'k2_call_signs.csv'
 
 # Get ids for ukraine, add more countries if required
 # DMR_COUNTRIES_FILTER = ['ukraine']
-DMR_COUNTRIES_FILTER = ['%'] 
+DMR_COUNTRIES_FILTER = [] 
 
 # Check if string contains ciryllic symbols
 def hasCiryllic(string):
@@ -17,11 +17,11 @@ def hasCiryllic(string):
 
 # Concatenate firstName+surName, transliterate if has ciryllic symbols
 def parseName(contact):
-    name = contact["fname"].strip() + ' ' + contact["surname"].strip()
+    name = contact.fname.strip() + ' ' + contact.surname.strip()
     if hasCiryllic(name):
-        print("Callsign %s has ciryllic in name: [%s]" % (contact["callsign"], name))
+        print(f'Callsign {contact.callsign} has ciryllic in name: [{name}]')
         name = transliterate(name)
-        print("Transliterated as [%s]" % name)
+        print(f'Transliterated as [{name}]')
     return name
 
 # Get k2 callsigns as dictionary
@@ -56,26 +56,16 @@ csv_file = open(file_name, 'w', newline='', encoding='utf-8')
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(headers)
 
-contacts = getDmrIds(DMR_COUNTRIES_FILTER)
+contacts = getDmrIdItems(DMR_COUNTRIES_FILTER)
 
 count = 1
+
 for contact in contacts:
     k2CallSign = findK2CallSign(contact)
     name = parseName(contact) if k2CallSign is None else "K2-" + k2CallSign
-
-    row = [
-        count,
-        contact["id"],
-        "None",
-        name,
-        contact["city"],
-        "",
-        contact["callsign"],
-        contact["state"],
-        contact["country"],
-        ""]
-    csv_writer.writerow(row)
+    record = [count, contact.id, "None", name, contact.city, "", contact.callsign, contact.state, contact.country, "" ]
+    csv_writer.writerow(record)
     count += 1
 csv_file.close()
 
-print("Saved to file: ", file_name)
+print(f'{count} contacts saved to file {file_name}', )
